@@ -14,6 +14,6 @@
 
 
 # Group Members
-Zulema Perez
-Jonathan Bedoy
-Fernando Mendoza
+#Zulema Perez
+#Jonathan Bedoy
+#Fernando Mendoza
