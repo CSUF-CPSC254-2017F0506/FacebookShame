@@ -1,16 +1,38 @@
+#include <cpprest/http_client.h>
+#include <cpprest/uri.h>  
 #include "oauth2.h"
 #include <iostream>
 
-void callme(char* param, char* value){
-  std::cout << "success parameter: " << param << std::endl << "access_token: " << value << std::endl << std::flush;
+using namespace web; 
+using namespace web::http;
+using namespace web::http::client; 
+
+void callme(std::string param, std::string value){
+  http_client client(U("https://graph.facebook.com/v2.10"));
+  uri_builder builder(U("/me/feed"));
+	builder.append_query(U("access_token"), value);
+
+  pplx::task<void> requestTask = client.request(methods::GET, builder.to_string()).then([] (http_response response){
+		json::array data = response.extract_json().get().at(U("data")).as_array();
+		for(int i=0; i<data.size(); i++){	
+			std::string id = data[i].at(U("id")).as_string();
+			//std::string story = data[i].at(U("story")).as_string();
+
+			std::cout << "ID: " << id << std::endl; //<< "story: " << story << std::endl;
+		}
+  });
+  requestTask.wait();
 }
 
 int main(){
-	char* loginEndpoint = "https://www.facebook.com/v2.10/dialog/oauth?client_id=125649754768050&response_type=token&redirect_uri=https://www.facebook.com/connect/login_success.html";
-	char* successParam = "access_token";
-	OAuth2 auth(loginEndpoint, successParam);
+	uri_builder login("https://www.facebook.com/v2.10/dialog/oauth");
+	login.append_query("client_id", 125649754768050);
+	login.append_query("response_type", "token");
+	login.append_query("scope", "user_posts");
+	login.append_query("redirect_uri", "https://www.facebook.com/connect/login_success.html");
+
+	OAuth2 auth(login.to_string(), "access_token");
 	auth.setCallback(callme);
 	auth.init();
 	return 0;
 }
-
