@@ -20,7 +20,7 @@ limitations under the License.
 #include <regex>
 #include <string>
 
-OAuth2::OAuth2(char* loginEndpoint, char* successParam){
+OAuth2::OAuth2(std::string loginEndpoint, std::string successParam){
 	this->loginEndpoint = loginEndpoint;
 	this->successParam = successParam;
 }
@@ -28,20 +28,20 @@ OAuth2::OAuth2(char* loginEndpoint, char* successParam){
 void OAuth2::pageLoaded(WebKitWebView  *web_view, WebKitLoadEvent load_event, gpointer user_data){
 	if(load_event == WEBKIT_LOAD_FINISHED){
 		OAuth2* authobj = (OAuth2*)user_data;
-		authobj->filterReply((char*)webkit_web_view_get_uri (web_view));
+		authobj->filterReply(webkit_web_view_get_uri(web_view));
 	}
 }
 
-void OAuth2::setCallback(void (*func)(char* param, char* value)){
+void OAuth2::setCallback(void (*func)(std::string param, std::string value)){
 	callback = func;
 }
 
-void OAuth2::filterReply(char* reply){
-	std::regex tokensearch(".*" + (std::string)successParam + "=(.*)&.*");
-	std::cmatch match;
+void OAuth2::filterReply(std::string reply){
+	std::regex tokensearch(".*" + successParam + "=(.*)&.*");
+	std::smatch match;	
 	std::regex_search(reply, match, tokensearch);
 	if(match.size() > 1){
-		(*callback)(successParam, (char*)std::string(match[1]).c_str());
+		(*callback)(successParam, match[1]);
 		app->quit();
 	}
 }
@@ -58,7 +58,7 @@ void OAuth2::init(){
   Gtk::Widget* pageContainer = Glib::wrap(GTK_WIDGET(page));
 
   window.add(*pageContainer);
-  webkit_web_view_load_uri(page, loginEndpoint);
+  webkit_web_view_load_uri(page, loginEndpoint.c_str());
   
 	g_signal_connect(page, "load-changed", G_CALLBACK(pageLoaded), this);
 
@@ -66,4 +66,5 @@ void OAuth2::init(){
 
   app->run( window ); 
 }
+
 
