@@ -6,6 +6,6 @@ To shame Facebook users for adding random people to their friends list just to m
 # Long Term Goal
 
 # Group Members
-Zulema Perez <br />
-Jonathan Bedoy <br />
-Fernando Mendoza
+Zulema Perez - Sqlite<br />
+Jonathan Bedoy - Api <br />
+Fernando Mendoza - Gui
