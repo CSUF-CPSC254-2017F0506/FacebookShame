@@ -9,16 +9,18 @@ using namespace web::http::client;
 
 void callme(std::string param, std::string value){
   http_client client(U("https://graph.facebook.com/v2.10"));
-  uri_builder builder(U("/me/feed"));
+  uri_builder builder(U("/me/friends?fields=picture.width(1000).height(700),name"));
 	builder.append_query(U("access_token"), value);
 
   pplx::task<void> requestTask = client.request(methods::GET, builder.to_string()).then([] (http_response response){
 		json::array data = response.extract_json().get().at(U("data")).as_array();
 		for(int i=0; i<data.size(); i++){	
-			std::string id = data[i].at(U("id")).as_string();
-			//std::string story = data[i].at(U("story")).as_string();
-
-			std::cout << "ID: " << id << std::endl; //<< "story: " << story << std::endl;
+			std::string name = data[i].at(U("name")).as_string();
+			json::object picture = data[i].at(U("picture")).as_object();
+			json::object dataurl = picture.at(U("data")).as_object();
+			std::string url = dataurl.at(U("url")).as_string();
+			std::cout << "name: " << name << std::endl;
+			std::cout << "url: " << url << std::endl;
 		}
   });
   requestTask.wait();
