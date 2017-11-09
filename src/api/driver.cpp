@@ -18,10 +18,11 @@ void callme(std::string param, std::string value){
 
   pplx::task<void> requestTask = client.request(methods::GET, builder.to_string()).then([] (http_response response){
 		
-
-		/*std::string username = response.extract_json().get().at(U("name")).as_string();
-		std::cout<< username;
-		*/
+		//json::object data = response.extract_json().get().at(U("name")).as_string();
+		//std::string username = response.extract_json().get().at(U("name")).as_string();
+		//std::cout<< username;
+		
+			
 			json::object finfo = response.extract_json().get().at(U("friends")).as_object();
 			json::array data = finfo.at(U("data")).as_array();
 		
@@ -36,6 +37,8 @@ void callme(std::string param, std::string value){
 			std::cout << "name: " << flist.front().names() << std::endl;
 			std::cout << "url: " << flist.front().picurls() << std::endl;
 		}
+		//friends usert(username, "");
+		//flist.push_front(usert);
   });
   requestTask.wait();
 }
