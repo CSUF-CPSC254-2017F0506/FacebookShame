@@ -57,6 +57,6 @@ int main(){
 	auth.setCallback(callme);
 	auth.init();
 	std::cout <<"\nThe data is now stored in a list of classes, the front of this list has: " 
-		  << flist.front().names() << " " << flist.front().picurls();
+		  << flist.front().names() << " " << flist.front().picurls() << std::endl;
 	return 0;
 }
