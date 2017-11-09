@@ -13,9 +13,9 @@ You will need to make sure that the compiler has access to the libraries when yo
 If for some reason there is an emoji present in your facebook data the JSON would not be able to extract it and return an error.
 
 # Accessing Data
-The data is stored in a list of classes. In this class you can access the following:
+The data is stored in a vector of classes. In this class you can access the following:
 
 	names(): will return the first and last name of the friend
 	picurls():will return the url of the friends picture
 
-The front of the list will always have the name of the actual user. he will not have a picture url but you would still be able to call it. In this case the picture url would return an empty string.
+Working on a way to get the username.

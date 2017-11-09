@@ -2,14 +2,14 @@
 #include <cpprest/uri.h>  
 #include "oauth2.h"
 #include "dataex.h"
-#include <list> 
+#include <vector> 
 #include <iostream>
 
 using namespace web; 
 using namespace web::http;
 using namespace web::http::client; 
 
-std::list <friends> flist;
+std::vector <friends> flist;
 
 void callme(std::string param, std::string value){
   http_client client(U("https://graph.facebook.com/v2.10"));
@@ -32,10 +32,10 @@ void callme(std::string param, std::string value){
 			json::object dataurl = picture.at(U("data")).as_object();
 			std::string url = dataurl.at(U("url")).as_string();
 			friends flisttemp(name, url);
-			flist.push_front(flisttemp);
+			flist.push_back(flisttemp);
 			
-			std::cout << "name: " << flist.front().names() << std::endl;
-			std::cout << "url: " << flist.front().picurls() << std::endl;
+			std::cout << "name: " << flist[i].names() << std::endl;
+			std::cout << "url: " << flist[i].picurls() << std::endl;
 		}
 		//friends usert(username, "");
 		//flist.push_front(usert);
