@@ -8,6 +8,7 @@
 class friends
 {
 	public:
+		friends();
 		friends(std::string,std::string);
 		std::string names() const;
 		std::string picurls() const;
