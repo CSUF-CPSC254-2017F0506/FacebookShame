@@ -5,9 +5,7 @@
 #include <cstdlib>
 
 
-Friends::Friends(): Friends("",""){
-    
-}
+Friends::Friends(): Friends("",""){}
 
 Friends::Friends(std::string names, std::string picurls) : name_(names), picurl_(picurls){}
 
