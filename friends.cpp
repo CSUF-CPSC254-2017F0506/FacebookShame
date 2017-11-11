@@ -180,7 +180,3 @@ void Friends::deleteBlob(){
 }
 
 
-int main(){
-
-}
-
