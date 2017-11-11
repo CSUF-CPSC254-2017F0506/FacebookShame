@@ -147,20 +147,3 @@ size_t Player::getHighScore()const{
     return high_score_;
 }
 
-
-int main()
-{
-  size_t id = 13579;	
-  std::string name = "Zules";
-  size_t score = 0;
-
-  Player test;
-  test.setId(id);
-  test.setName(name);
-  test.setScore(score);
-
-
-  test.retrieveInfo();
-
-  return (0);
-}
