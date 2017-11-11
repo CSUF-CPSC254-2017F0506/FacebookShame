@@ -1,12 +1,13 @@
-# FaceBookShame Motivation
-To shame Facebook users for adding random people to their friends list just to make themselves look and feel popular.
+# Motivation
+To create a game application while learning the process and implementation of opensource development and gain <br/>
+experience with Gtk + glade gui, facebook web api and sqlite3.
 
 # Short Term Goal
-To Develop a game application for the sole purpose of shaming Facebook users for not knowing the people <br /> 
+Develop a game application for the sole purpose of shaming Facebook users for not knowing the people <br /> 
 in thier friendslist.
 
 # Long Term Goal
-To further develop the game application to incorporate shaming of other social networking services and social media users.
+Further develop the game application to incorporate shaming of other social networking services and social media users.
 
 # Group Members
 Zulema Perez - Sqlite <br />
