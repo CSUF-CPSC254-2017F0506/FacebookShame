@@ -2,11 +2,14 @@
 To shame Facebook users for adding random people to their friends list just to make themselves look and feel popular.
 
 # Short Term Goal
+To Develop a game application for the sole purpose of shaming Facebook users for not knowing the people <br /> 
+in thier friendslist.
 
 # Long Term Goal
+To further develop the game application to incorporate shaming of other social networking services and social media users.
 
 # Group Members
-Zulema Perez - Sqlite<br />
+Zulema Perez - Sqlite <br />
 Jonathan Bedoy - Api <br />
 Fernando Mendoza - Gui
 
