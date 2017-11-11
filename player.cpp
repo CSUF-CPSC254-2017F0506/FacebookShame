@@ -23,7 +23,7 @@ int callback(void *data, int argc, char **argv, char **azColName){
 }
 
 
-Player::Player(){}
+Player::Player(): Player(0,"",0){}
 
 Player::Player( size_t pid, std::string pname, size_t score): player_id_(pid), player_name_(pname), score_(score){}
 
