@@ -10,7 +10,7 @@ Zulema Perez - Sqlite<br />
 Jonathan Bedoy - Api <br />
 Fernando Mendoza - Gui
 
-# SQLite3
+# SQLite3 Info
 
 # Installation
 The programs contained in this folder use sqlite3. Required libraries need to be installed before running them. Below are instructions to install these libraries on the specified operating systems
