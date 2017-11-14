@@ -17,5 +17,6 @@ The data is stored in a vector of classes. In this class you can access the foll
 
 	names(): will return the first and last name of the friend
 	picurls():will return the url of the friends picture
+	ids():will return the facebokk id of the friend
 
 Working on a way to get the username.
