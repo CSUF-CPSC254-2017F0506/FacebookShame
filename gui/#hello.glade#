@@ -49,7 +49,7 @@
         </child>
         <child>
           <object class="GtkButton" id="cont">
-            <property name="label" translatable="yes">button</property>
+            <property name="label" translatable="yes">cont</property>
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
@@ -63,7 +63,7 @@
         </child>
         <child>
           <object class="GtkButton" id="quit">
-            <property name="label" translatable="yes">button</property>
+            <property name="label" translatable="yes">quit</property>
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
@@ -73,6 +73,49 @@
           <packing>
             <property name="x">295</property>
             <property name="y">199</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkOverlay" id="overlay1">
+            <property name="width_request">437</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkGrid" id="grid1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkImage" id="image3">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="index">-1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="x">3</property>
           </packing>
         </child>
       </object>
@@ -199,16 +242,28 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="image2">
+          <object class="GtkBox" id="box1">
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="stock">gtk-missing-image</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="image2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="stock">gtk-missing-image</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="x">60</property>
-            <property name="y">114</property>
+            <property name="x">40</property>
+            <property name="y">123</property>
           </packing>
         </child>
       </object>
@@ -288,14 +343,14 @@
           <object class="GtkButton" id="Login">
             <property name="label" translatable="yes">login</property>
             <property name="width_request">100</property>
-            <property name="height_request">43</property>
+            <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
           </object>
           <packing>
-            <property name="x">190</property>
-            <property name="y">343</property>
+            <property name="x">186</property>
+            <property name="y">323</property>
           </packing>
         </child>
         <child>
@@ -314,14 +369,14 @@
           <object class="GtkButton" id="quit1">
             <property name="label" translatable="yes">quit</property>
             <property name="width_request">100</property>
-            <property name="height_request">42</property>
+            <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="x">312</property>
-            <property name="y">344</property>
+            <property name="y">323</property>
           </packing>
         </child>
       </object>
