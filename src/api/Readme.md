@@ -32,6 +32,14 @@ If you would like to see an example of this then take a look at main.cpp above.
 
 Make sure you compile the program using the same standard as used above.
 
+## Calling the function
+Simply call the function callFacebook(); to run the program. This function will return a vector that has the information from facebook. A way to take advantage of this would be:
+
+	std::vector<friends> info;
+	info = callFacebook();
+
+"info" will now have the proper information.
+
 ## Accessing Data
 The data is stored in a vector of classes. In this class you can access the following:
 
