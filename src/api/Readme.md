@@ -12,7 +12,7 @@ You will need to make sure that the compiler has access to the libraries when yo
 # Known Issues
 If for some reason there is an emoji present in your facebook data the JSON would not be able to extract it and return an error.
 
-#Incorporating the program
+# Incorporating the program
 Add the following files into your folder
 	oauth2.cpp
 	oauth2.h
