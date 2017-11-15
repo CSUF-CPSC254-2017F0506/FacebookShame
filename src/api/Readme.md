@@ -23,9 +23,11 @@ Add the following files into your folder
 	driver.h
 
 After adding these to your folder make sure that you include the following into your main cpp
+
 	#include <vector>
 	#include "dataex.h"
 	#include "driver.h"
+
 If you would like to see an example of this then take a look at main.cpp above.
 
 Make sure you compile the program using the same standard as used above.
