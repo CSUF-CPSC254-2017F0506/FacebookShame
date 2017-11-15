@@ -14,12 +14,14 @@ If for some reason there is an emoji present in your facebook data the JSON woul
 
 # Incorporating the program
 Add the following files into your folder
+
 	oauth2.cpp
 	oauth2.h
 	dataex.h
 	dataex.cpp
 	driver.cpp
 	driver.h
+
 After adding these to your folder make sure that you include the following into your main cpp
 	#include <vector>
 	#include "dataex.h"
