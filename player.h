@@ -14,6 +14,7 @@ public:
     Player();
     Player(size_t pid, std::string pname, size_t score);
     
+    void createPlayerInfo();
     void insertInfo();
     void retrieveInfo();
 
