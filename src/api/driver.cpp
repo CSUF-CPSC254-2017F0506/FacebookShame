@@ -2,6 +2,7 @@
 #include <cpprest/uri.h>  
 #include "oauth2.h"
 #include "dataex.h"
+#include "driver.h"
 #include <vector> 
 #include <iostream>
 
@@ -19,7 +20,7 @@ void callme(std::string param, std::string value){
   pplx::task<void> requestTask = client.request(methods::GET, builder.to_string()).then([] (http_response response){
 		
 
-		//std::string username = jsondata.at(U("name")).as_string();
+		//std::string username = response.extract_json().get().at(U("name")).as_string;
 		//std::cout<< username;
 			
 		
@@ -37,9 +38,9 @@ void callme(std::string param, std::string value){
 			flist.push_back(flisttemp);
 
 			
-			std::cout << "name: " << flist[i].names() << std::endl;
-			std::cout << "url: " << flist[i].picurls() << std::endl;
-			std::cout << "id: " << flist[i].ids() << std::endl;
+			//std::cout << "name: " << flist[i].names() << std::endl;
+			//std::cout << "url: " << flist[i].picurls() << std::endl;
+			//std::cout << "id: " << flist[i].ids() << std::endl;
 		}
 		//friends usert(username, "");
 		//flist.push_front(usert);
@@ -55,7 +56,7 @@ void callme(std::string param, std::string value){
 
 
 
-int main(){
+std::vector<friends> callFacebook(){
 	uri_builder login("https://www.facebook.com/v2.10/dialog/oauth");
 	login.append_query("client_id", 125649754768050);
 	login.append_query("response_type", "token");
@@ -64,7 +65,7 @@ int main(){
 	OAuth2 auth(login.to_string(), "access_token");
 	auth.setCallback(callme);
 	auth.init();
-	std::cout <<"\nThe data is now stored in a vector of classes, the front of this vector has: " 
-		  << flist.front().names() << " " << flist.front().picurls() << std::endl;
-	return 0;
+	//std::cout <<"\nThe data is now stored in a vector of classes, the front of this vector has: " 
+	//	  << flist.front().names() << " " << flist.front().picurls() << std::endl;
+	return flist;
 }

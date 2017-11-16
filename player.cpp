@@ -27,6 +27,46 @@ Player::Player(): Player(0,"",0){}
 
 Player::Player( size_t pid, std::string pname, size_t score): player_id_(pid), player_name_(pname), score_(score){}
 
+void Player::createPlayerInfo(){
+	
+     sqlite3* db;
+	char* zErrMsg = 0;
+	int rc;
+	std::string sql;
+
+	/* Open database*/
+	rc = sqlite3_open("pscore.db", &db);
+
+	if(rc){
+		
+		fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+		exit(0);
+	}
+	else{
+		fprintf(stdout, "Opened database successfully\n");
+	}
+		
+	/*Create SQL statement */
+
+	sql = "CREATE TABLE IF NOT EXISTS Player ("
+		 "ID	 INTEGER	NOT NULL," \
+		 "NAME	TEXT	 NOT NULL," \
+		 "SCORE	INTEGER);";
+	
+	/* Execute SQL statement */
+	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+	
+	if(rc != SQLITE_OK){
+
+	fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		sqlite3_free(zErrMsg);
+	}
+	else{
+
+		fprintf(stdout, "Table created successfully\n");
+	}
+	sqlite3_close(db);
+}
 
 void Player::insertInfo(){
 
