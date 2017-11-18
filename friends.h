@@ -6,7 +6,6 @@
 
 #ifndef friends_h
 #define friends_h
-
 #include <iostream>
 #include <string>
 
@@ -24,16 +23,12 @@ public:
     void setPicUrls(std::string pic);
     std::string getPicUrls() const;
     
-    int genRandom();
-    
     bool compareNames(std::string random, std::string guess);
-	
     
 private:
     std::string name_;
     std::string picurl_;
     std::string id_;
 };
-
 
 #endif

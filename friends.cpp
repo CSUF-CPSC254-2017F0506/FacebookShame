@@ -7,10 +7,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string>
-#include <cstdlib>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
 #include <algorithm>
 
 using namespace web; 
@@ -78,7 +74,7 @@ void Friends::setId(std::string id){
 }
 
 std::string Friends::getId(){
-csu	return id_;
+	return id_;
 }
 
 void Friends::setNames(std::string fname){
@@ -101,20 +97,12 @@ std::string Friends::getPicUrls() const{
     return picurl_;
 }
 
-int Friends::genRandom(){
-
-	
-	int i =0; 
-    for(; i < friends.size(); i++){
-		std::cout <<i<<" " << friends[i].getNames() << std::endl << " "<< friends[i].getPicUrls()<< std::endl << " "<< friends[i].getId()<<std::endl;
-    }
-
-    return rand() % i;
-    
-}
 
 bool Friends::compareNames(std::string random, std::string guess){
     
+    
+    random.erase(remove_if(random.begin(), random.end(), isspace));
+    guess.erase(remove_if(guess.begin(), guess.end(), isspace));
     std::transform(random.begin(), random.end(), random.begin(), ::toupper);
     std::transform(guess.begin(),guess.end(), guess.begin(), ::toupper);
     
@@ -129,6 +117,5 @@ bool Friends::compareNames(std::string random, std::string guess){
     }
     
 }
-
 
 
