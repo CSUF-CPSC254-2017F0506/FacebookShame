@@ -48,10 +48,10 @@ void Player::createPlayerInfo(){
 		
 	/*Create SQL statement */
 
-	sql = "CREATE TABLE IF NOT EXISTS Player ("
-		 "ID	 INTEGER	NOT NULL," \
-		 "NAME	TEXT	 NOT NULL," \
-		 "SCORE	INTEGER);";
+	sql = "CREATE TABLE IF NOT EXISTS Player ("\
+		 "ID	 TEXT PRIMARY KEY NOT NULL UNIQUE,"\
+		 "NAME   TEXT	 NOT NULL);"; \
+		 
 	
 	/* Execute SQL statement */
 	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
@@ -65,6 +65,25 @@ void Player::createPlayerInfo(){
 
 		fprintf(stdout, "Table created successfully\n");
 	}
+
+	sql = "CREATE TABLE IF NOT EXISTS Scores("\
+		 "PID TEXT PRIMARY KEY NOT NULL,"\
+		 "SCORE INTEGER,"
+		 "FOREIGN KEY (PID) REFERENCES Players(ID));";\
+
+	/* Execute SQL statement */
+	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+	
+	if(rc != SQLITE_OK){
+
+	fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		sqlite3_free(zErrMsg);
+	}
+	else{
+
+		fprintf(stdout, "Table created successfully\n");
+	}
+
 	sqlite3_close(db);
 }
 
@@ -90,8 +109,25 @@ void Player::insertInfo(){
 	}	
 	/* Create SQL statement */
 	
-	sql = "INSERT INTO Player(ID,NAME,SCORE)"\
-		 " VALUES('"+ std::to_string(player_id_) +"','"+ player_name_ +"','"+ std::to_string(score_) +"');";
+	sql = "INSERT INTO Player(ID,NAME)"\
+		 " VALUES("+ std::to_string(player_id_) +",'"+ player_name_ +"');";
+
+	/* Execute SQL statement */
+	
+	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+
+	if(rc != SQLITE_OK ){
+
+		fprintf(stderr, "SQL error: %s\n", zErrMsg);
+		sqlite3_free(zErrMsg);
+	}
+	else{
+
+		fprintf(stdout, "Records created successfully\n");
+	}
+
+	sql = "INSERT INTO Scores(PID,SCORE)"\
+		 " VALUES("+ std::to_string(player_id_) +","+ std::to_string(score_) +");";
 
 	/* Execute SQL statement */
 	
@@ -187,3 +223,17 @@ size_t Player::getHighScore()const{
     return high_score_;
 }
 
+int main(){
+	Player p;
+	p.createPlayerInfo();
+	
+	size_t id = 13579;
+	p.setId(id);
+	std::string name = "Zules";
+	p.setName(name);
+
+	size_t score = 0;
+	p.setScore(score);
+	
+	p.insertInfo();
+}
