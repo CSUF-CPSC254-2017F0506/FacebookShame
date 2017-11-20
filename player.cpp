@@ -13,9 +13,8 @@ int callback(void *data, int argc, char **argv, char **azColName){
 	
    if(Player* const P = static_cast<Player*>(data)){
 		
-		P->player_id_ = atoi(argv[0]);
-		P->player_name_ = argv[1];
-		P->score_ = atoi(argv[2]);
+		P->player_name_ = argv[0];
+		P->score_ = atoi(argv[1]);
 	}
    
 
@@ -23,9 +22,9 @@ int callback(void *data, int argc, char **argv, char **azColName){
 }
 
 
-Player::Player(): Player(0,"",0){}
+Player::Player(): Player("",0){}
 
-Player::Player( size_t pid, std::string pname, size_t score): player_id_(pid), player_name_(pname), score_(score){}
+Player::Player( std::string pname, size_t score): player_name_(pname), score_(score){}
 
 void Player::createPlayerInfo(){
 	
@@ -35,7 +34,7 @@ void Player::createPlayerInfo(){
 	std::string sql;
 
 	/* Open database*/
-	rc = sqlite3_open("pscore.db", &db);
+	rc = sqlite3_open("scores.db", &db);
 
 	if(rc){
 		
@@ -49,26 +48,10 @@ void Player::createPlayerInfo(){
 	/*Create SQL statement */
 
 	sql = "CREATE TABLE IF NOT EXISTS Player ("\
-		 "ID	 TEXT PRIMARY KEY NOT NULL,"\
-		 "NAME   TEXT	 NOT NULL);"; \
+		 "Name	TEXT		NOT NULL,"\
+		 "Score   INTEGER);"; \
 		 
 	
-	/* Execute SQL statement */
-	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
-	
-	if(rc != SQLITE_OK){
-
-	fprintf(stderr, "SQL error: %s\n", zErrMsg);
-		sqlite3_free(zErrMsg);
-	}
-	else{
-
-		fprintf(stdout, "Table created successfully\n");
-	}
-
-	sql = "CREATE TABLE IF NOT EXISTS Scores("\
-		 "PID TEXT NOT NULL,"\
-		 "SCORE INTEGER);";
 	/* Execute SQL statement */
 	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
 	
@@ -94,7 +77,7 @@ void Player::insertInfo(){
 
 	/* Open dtabase */
 	
-	rc = sqlite3_open("pscore.db", &db);
+	rc = sqlite3_open("scores.db", &db);
 	
 	if(rc){
 		
@@ -107,8 +90,8 @@ void Player::insertInfo(){
 	}	
 	/* Create SQL statement */
 	
-	sql = "INSERT OR REPLACE INTO Player(ID,NAME)"\
-		 " VALUES("+ std::to_string(player_id_) +",'"+ player_name_ +"');";
+	sql = "INSERT INTO Player(Name, Score)"\
+		 " VALUES('"+ player_name_ +"','"+ std::to_string(score_) +"');";
 
 	/* Execute SQL statement */
 	
@@ -124,22 +107,6 @@ void Player::insertInfo(){
 		fprintf(stdout, "Records created successfully\n");
 	}
 
-	sql ="INSERT INTO Scores(PID, SCORE)"\
-		" VALUES("+ std::to_string(player_id_) +", "+ std::to_string(score_) +");";
-
-	/* Execute SQL statement */
-	
-	rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
-
-	if(rc != SQLITE_OK ){
-
-		fprintf(stderr, "SQL error: %s\n", zErrMsg);
-		sqlite3_free(zErrMsg);
-	}
-	else{
-
-		fprintf(stdout, "Records created successfully\n");
-	}
 	sqlite3_close(db);
 }
 
@@ -149,11 +116,12 @@ void Player::retrieveInfo(){
 	char* zErrMsg = 0;
 	int rc;
 	std::string sql;
+	
 	Player* data =  new Player();
 
 	/* Open database */
 	
-	rc = sqlite3_open("pscore.db", &db);
+	rc = sqlite3_open("scores.db", &db);
 
 	if(rc){
 		
@@ -165,10 +133,9 @@ void Player::retrieveInfo(){
 	}
 	
 	/* Create SQL statement */
-	sql = "SELECT * FROM Player"
-		 " WHERE ID LIKE \" '"+ std::to_string(player_id_) +"' \";";
-	
-	std::cout<< sql <<std::endl;
+	sql = "SELECT Name, MAX(Score) FROM Player;";
+
+	std::cout <<sql <<std::endl;
 
 	/* Execute SQL statement */
 
@@ -182,23 +149,13 @@ void Player::retrieveInfo(){
 	else{
 		fprintf(stdout, "Operation done successfully\n");
 	}
-
-	player_name_ = data->player_name_;
-	score_ = data->score_;
+	
+	hs_name_ = data->player_name_;
+	high_score_ = data->score_;
 	
 	delete data;
 	
 	sqlite3_close(db);
-}
-
-void Player::setId(size_t id){
-	
-	player_id_ = id;
-}
-
-size_t Player::getId() const{
-	
-	return player_id_;
 }
 
 void Player::setName(std::string pn){
@@ -219,13 +176,45 @@ size_t Player::getScore() const {
     return score_;
 }
 
-void Player::setHighScore(size_t hs){
-   
-	high_score_ = hs;
+std::string Player::getHSName() const{
+
 }
 
 size_t Player::getHighScore()const{
     return high_score_;
 }
+void Player::setHighScore(std::string hsname, size_t hs){
+	hs_name_ = hsname;
+	high_score_ = hs;
+}
 
+int main(){
+	Player p;
+	std::string hsname;
+	int hs = 0;
+	p.createPlayerInfo();
+	std::string name = "Zules";
+	int score1 = 1;
+	p.setName(name);
+	p.setScore(score1);
+	p.insertInfo();
+	std::string name2 = "Jsin";
+	int score2 = 0;
+	p.setName(name2);
+	p.setScore(score2);
+	p.insertInfo();
+	std::string name3 = "Thania";
+	int score3 =3;
+	p.setName(name3);
+	p.setScore(score3);
+	p.insertInfo();
+	
+	
+	p.retrieveInfo();
+	
+	hsname = p.getHSName();
+	hs = p.getHighScore();
+
+	std::cout << "High score: " << hsname << " "<< hs <<std::endl;
+}
 
