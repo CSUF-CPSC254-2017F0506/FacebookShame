@@ -24,7 +24,6 @@ public:
     void setScore(size_t s);
     size_t getScore() const;
     
-    void setHighScore(std::string hsname, size_t hs);
     std::string getHSName() const;
     size_t getHighScore() const;
     

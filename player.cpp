@@ -177,15 +177,11 @@ size_t Player::getScore() const {
 }
 
 std::string Player::getHSName() const{
-
+	return hs_name_;
 }
 
 size_t Player::getHighScore()const{
     return high_score_;
-}
-void Player::setHighScore(std::string hsname, size_t hs){
-	hs_name_ = hsname;
-	high_score_ = hs;
 }
 
 int main(){
