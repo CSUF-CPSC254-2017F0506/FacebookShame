@@ -1,35 +1,79 @@
 
 #include "friends.h"
+#include "src/api/oauth2.h"
+#include <cpprest/http_client.h>
+#include <cpprest/uri.h>  
+#include <vector> 
+#include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <algorithm>
+
+using namespace web; 
+using namespace web::http;
+using namespace web::http::client; 
+
+std::vector <Friends> flist;
+
+Friends::Friends(): Friends("","",""){}
+
+Friends::Friends(std::string name, std::string picurl, std::string id) : name_(name), picurl_(picurl), id_(id){}
 
 
-Friends::Friends(): Friends(0,"",""){}
+void callme(std::string param, std::string value){
+  http_client client(U("https://graph.facebook.com/v2.10"));
+  uri_builder builder(U("/me?fields=name,friends%7Bpicture.width(159).height(127),name,id%7D"));
+	builder.append_query(U("access_token"), value);
 
-Friends::Friends(size_t id, std::string name, std::string picurl) : id_(id), name_(name), picurl_(picurl){}
+  pplx::task<void> requestTask = client.request(methods::GET, builder.to_string()).then([] (http_response response){
 
-int callback(void* data, int argc, char** argv, char** azColName){
-
-	struct tm blob;	
-	
-	for(int i = 0; i < argc; i++){
+		//std::string username = response.extract_json().get().at(U("name")).as_string;
+		//std::cout<< username;
+			json::object finfo = response.extract_json().get().at(U("friends")).as_object();
+			json::array data = finfo.at(U("data")).as_array();
 		
-		if(!strcmp(azColName[i], "PICS"))
-		{  //HAndle Blob data
-			memcpy(&blob, argv[i], sizeof(struct tm));
-			std::cout << "Retrieved from blob: " << "blob.tm_" <<std::endl;
+		for(int i=0; i<data.size(); i++){	
+			std::string name = data[i].at(U("name")).as_string();
+			json::object picture = data[i].at(U("picture")).as_object();
+			json::object dataurl = picture.at(U("data")).as_object();
+			std::string url = dataurl.at(U("url")).as_string();
+			std::string id = data[i].at(U("id")).as_string();
+			Friends flisttemp(name, url,id);
+			flist.push_back(flisttemp);
+
+			
+			//std::cout << "name: " << flist[i].names() << std::endl;
+			//std::cout << "url: " << flist[i].picurls() << std::endl;
+			//std::cout << "id: " << flist[i].ids() << std::endl;
 		}
-		else{	//All other database columns
-		std::cout << azColName[i] << " = " << (argv[i] ? argv[i] : "NULL") << std::endl;
-		}
-	}
-	std::cout << std::endl;
-	return 0;
+		//friends usert(username, "");
+		//flist.push_front(usert);
+
+  });
+  requestTask.wait();
 }
 
-void Friends::setId(size_t id){
+std::vector<Friends> callFacebook(){
+	uri_builder login("https://www.facebook.com/v2.10/dialog/oauth");
+	login.append_query("client_id", 125649754768050);
+	login.append_query("response_type", "token");
+	login.append_query("scope", "user_posts");
+	login.append_query("redirect_uri", "https://www.facebook.com/connect/login_success.html");
+	OAuth2 auth(login.to_string(), "access_token");
+	auth.setCallback(callme);
+	auth.init();
+	//std::cout <<"\nThe data is now stored in a vector of classes, the front of this vector has: " 
+	//	  << flist.front().names() << " " << flist.front().picurls() << std::endl;
+	return flist;
+}
+
+std::vector <Friends> friends = callFacebook();
+
+void Friends::setId(std::string id){
 	id_= id;
 }
 
-size_t Friends::getId(){
+std::string Friends::getId(){
 	return id_;
 }
 
@@ -53,13 +97,12 @@ std::string Friends::getPicUrls() const{
     return picurl_;
 }
 
-std::string Friends::genRandom(){
-
-    return friends[rand() % stringLength];
-}
 
 bool Friends::compareNames(std::string random, std::string guess){
     
+    
+    random.erase(remove_if(random.begin(), random.end(), isspace));
+    guess.erase(remove_if(guess.begin(), guess.end(), isspace));
     std::transform(random.begin(), random.end(), random.begin(), ::toupper);
     std::transform(guess.begin(),guess.end(), guess.begin(), ::toupper);
     
@@ -73,110 +116,6 @@ bool Friends::compareNames(std::string random, std::string guess){
         return false;
     }
     
-}
-
-void Friends::insertBlob(){
-
-	sqlite3* db;
-	char* zErrMsg = 0;
-	
-	time_t tt = 0;
-	time_t now = time(&tt);		// seconds since the Epoch
-	struct tm* blob = gmtime(&now);  //Create the blob to store in the database
-
-	std::cout <<"Stored: "<< "blob->tm_"<< std::endl;
-	std::cout << std::endl;
-
-	int rc = sqlite3_open("friends.db", &db);
-	if(rc){
-		std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
-		exit(1);
-	}
-	
-	//Insert blob data into database
-
-	std::string zSql = "INSERT INTO Friends(ID,NAME,PIC) VALUES('"+ std::to_string(id_) +"','" + name_ +"', ?);";
-	sqlite3_stmt* ppStmt;
-	const char** pzTail;
-
-	if( sqlite3_prepare_v2(db, zSql.c_str(), sizeof(zSql)+1, &ppStmt, pzTail) != SQLITE_OK)
-	{
-		std::cerr<<"db error: " << sqlite3_errmsg(db) <<std::endl;
-		sqlite3_close(db);
-		exit(1);
-	}
-	
-	if(ppStmt){
-	
-	// For Blob column bind 
-	sqlite3_bind_blob(ppStmt, id_, blob, sizeof(struct tm), SQLITE_TRANSIENT);
-	sqlite3_step(ppStmt);
-	sqlite3_finalize(ppStmt);
-	sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
-	
-	}
-	else{
-		std::cerr<< "Error: ppStmt is NULL" << std::endl;
-		sqlite3_close(db);
-		exit(1);
-	}
-	// CLose database
-	
-	sqlite3_close(db);
-}
-	
-void Friends::retrieveBlob(){
-
-	sqlite3* db;
-	char* zErrMsg = 0;
-
-	int rc = sqlite3_open("friends.db", &db);
-	if(rc){
-		std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
-		exit(1);
-	}
-	
-	// Select rows from database
-
-	rc = sqlite3_exec(db, "SELECT * FROM Friends", callback, 0, &zErrMsg);
-	if( rc != SQLITE_OK){
-		
-		std::cerr << "SQL error: " << zErrMsg << std::endl;
-		sqlite3_free(zErrMsg);
-		sqlite3_close(db);
-		exit(1);
-	}
-
-	sqlite3_exec(db, "END", NULL, NULL, NULL);
-	
-	sqlite3_close(db);
-}
-
-void Friends::deleteBlob(){
-	
-	sqlite3* db;
-	char* zErrMsg = 0;
-
-	int rc = sqlite3_open("friends.db", &db);
-	if(rc){
-		std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
-		exit(1);
-	}
-	
-	// Select rows from database
-
-	rc = sqlite3_exec(db, "DELETE FROM Friends", callback, 0, &zErrMsg);
-	if( rc != SQLITE_OK){
-		
-		std::cerr << "SQL error: " << zErrMsg << std::endl;
-		sqlite3_free(zErrMsg);
-		sqlite3_close(db);
-		exit(1);
-	}
-
-	sqlite3_exec(db, "END", NULL, NULL, NULL);
-	
-	sqlite3_close(db);
 }
 
 
