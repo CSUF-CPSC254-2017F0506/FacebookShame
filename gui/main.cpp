@@ -4,8 +4,8 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
-#include "/home/cpsc254/FacebookShame/src/api/dataex.h"
-#include "/home/cpsc254/FacebookShame/src/api/driver.h"
+#include "../src/api/dataex.h"
+#include "../src/api/driver.h"
 
 
 using namespace std;
