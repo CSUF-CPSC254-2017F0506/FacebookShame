@@ -75,41 +75,6 @@
             <property name="y">199</property>
           </packing>
         </child>
-        <child>
-          <object class="GtkOverlay" id="overlay1">
-            <property name="width_request">437</property>
-            <property name="height_request">40</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkGrid" id="grid1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="index">-1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="x">3</property>
-          </packing>
-        </child>
       </object>
     </child>
   </object>
@@ -316,19 +281,7 @@
           </object>
           <packing>
             <property name="x">217</property>
-            <property name="y">208</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="entry2">
-            <property name="width_request">166</property>
-            <property name="height_request">83</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="x">217</property>
-            <property name="y">262</property>
+            <property name="y">251</property>
           </packing>
         </child>
         <child>
@@ -369,6 +322,19 @@
           <packing>
             <property name="x">312</property>
             <property name="y">323</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="notice">
+            <property name="width_request">141</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Enter a Screen Name</property>
+          </object>
+          <packing>
+            <property name="x">224</property>
+            <property name="y">223</property>
           </packing>
         </child>
       </object>

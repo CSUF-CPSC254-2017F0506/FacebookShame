@@ -1,4 +1,3 @@
-//headers
 #include <gtkmm.h>
 #include <iostream>
 #include <string>
@@ -6,20 +5,6 @@
 #include <vector>
 #include "/home/cpsc254/FacebookShame/src/api/dataex.h"
 #include "/home/cpsc254/FacebookShame/src/api/driver.h"
-
-
-using namespace std;
-//vars
-std::string name;
-std::string Fname;
-std::string Lname;
-std::string url;
-std::string currscore;
-int score = 0;
-int pick;
-std::vector<friends> info;
-
-//funcs
 
 void set_high_score();//from database
 void convert();//allow picture to show
@@ -33,92 +18,6 @@ void on_button_clicked2();//quit
 void on_button_clicked3();//submit guess
 void on_button_clicked4();//on continue
 
-
-//login 
-Gtk::Window* pWindow = nullptr;
-Gtk::Entry* pTextbox = nullptr;
-Gtk::Button* pButton = nullptr;
-Gtk::Button* pButton2 = nullptr;
-
-//gamescreen
-Gtk::Window* pWindow2 = nullptr;
-Gtk::Entry* pTextbox3 = nullptr;
-
-Gtk::Button* pButton3 = nullptr;
-Gtk::Image* pImage = nullptr;
-//fail
-Gtk::Window* pWindow3 = nullptr;
-Gtk::Button* pButton4 = nullptr;
-Gtk::Button* pButton5 = nullptr;
-Gtk::Label* pLabel = nullptr;
-Gtk::Label* pLabel2 = nullptr;
-//cont
-Gtk::Window* pWindow4 = nullptr;
-Gtk::Button* pButton6 = nullptr;
-//button clicks
-
-
-int main(int argc, char *argv[])
-{
-	Gtk::Main kit(argc, argv);
-  //auto app =  Gtk::Application::create(argc, argv);
-
-  Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file("hello.glade");
-
-  
-//login
-    
-  builder->get_widget("hello_window", pWindow);
-  pWindow->set_size_request(625,475);
-  pWindow->set_resizable(false);
-
- 
-  builder->get_widget("entry1", pTextbox);
-  pTextbox->set_text("screen_name");
-
-  builder->get_widget("Login", pButton);  
-  pButton->signal_clicked().connect( sigc::ptr_fun(on_button_clicked) );
-
-  builder->get_widget("quit1", pButton2);  
-  pButton2->signal_clicked().connect( sigc::ptr_fun(on_button_clicked2) );
-	
-//game screen
-  builder->get_widget("gamescreen", pWindow2);
-  pWindow2->set_size_request(625,475);
-
-  builder->get_widget("image2",pImage);
-  
-  
-builder->get_widget("FnameTB", pTextbox3);
-
-
-
-builder->get_widget("guess", pButton3);  
-  pButton3->signal_clicked().connect( sigc::ptr_fun(on_button_clicked3) );
-//fail screen
-  builder->get_widget("Fail_screen", pWindow3);
-  pWindow3->set_size_request(625,475);
-  builder->get_widget("Score", pLabel);
-  builder->get_widget("Hscore", pLabel2);
-  builder->get_widget("cont", pButton4);  
-  pButton4->signal_clicked().connect( sigc::ptr_fun(on_button_clicked2) );
-
-  builder->get_widget("quit", pButton5);  
-  pButton5->signal_clicked().connect( sigc::ptr_fun(on_button_clicked2) );
-
-//cont
- builder->get_widget("cont_screen", pWindow4);
-  pWindow4->set_size_request(625,475);
-  builder->get_widget("Cont_button",pButton6);
-  pButton6->signal_clicked().connect( sigc::ptr_fun(on_button_clicked4) );
-
-//start
-
-pWindow->show();	
-kit.run();
-  //return app->run(*pOffwin);
-
-}
 void convert(){
 pTextbox3->set_text("Firstname\tLastname");
 string str = "wget -O temp.jpg -U Mozilla '";
