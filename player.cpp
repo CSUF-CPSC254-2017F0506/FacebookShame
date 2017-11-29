@@ -2,15 +2,8 @@
 
 
 int callback(void *data, int argc, char **argv, char **azColName){
-   int i;
-   fprintf(stderr, "%s: ", (const char*)data);
    
-   for(i = 0; i<argc; i++){
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-   }
    
-   printf("\n");
-	
    if(Player* const P = static_cast<Player*>(data)){
 		
 		P->player_name_ = argv[0];
@@ -26,6 +19,10 @@ Player::Player(): Player("",0){}
 
 Player::Player( std::string pname, size_t score): player_name_(pname), score_(score){}
 
+/* 
+* Creates the table Player (if it does not already exist)
+* to keep player name and player scores in the scores.db 
+*/
 void Player::createPlayerInfo(){
 	
      sqlite3* db;
@@ -67,6 +64,11 @@ void Player::createPlayerInfo(){
 
 	sqlite3_close(db);
 }
+
+/*
+* Inserts player name and player score into
+* Player table and stores it in the scores.db
+*/
 
 void Player::insertInfo(){
 
@@ -110,6 +112,12 @@ void Player::insertInfo(){
 	sqlite3_close(db);
 }
 
+/*
+* Retrieves player name and score 
+* of the player with the highest score 
+* from the scores.db
+*/
+
 void Player::retrieveInfo(){
 
 	sqlite3* db;
@@ -135,7 +143,6 @@ void Player::retrieveInfo(){
 	/* Create SQL statement */
 	sql = "SELECT Name, MAX(Score) FROM Player;";
 
-	std::cout <<sql <<std::endl;
 
 	/* Execute SQL statement */
 
@@ -188,22 +195,6 @@ int main(){
 	Player p;
 	std::string hsname;
 	int hs = 0;
-	p.createPlayerInfo();
-	std::string name = "Zules";
-	int score1 = 1;
-	p.setName(name);
-	p.setScore(score1);
-	p.insertInfo();
-	std::string name2 = "Jsin";
-	int score2 = 0;
-	p.setName(name2);
-	p.setScore(score2);
-	p.insertInfo();
-	std::string name3 = "Thania";
-	int score3 =3;
-	p.setName(name3);
-	p.setScore(score3);
-	p.insertInfo();
 	
 	
 	p.retrieveInfo();
