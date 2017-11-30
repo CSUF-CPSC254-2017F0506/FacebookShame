@@ -1,7 +1,7 @@
 #include <cpprest/http_client.h>
 #include <cpprest/uri.h>  
 #include "oauth2.h"
-#include "dataex.h"
+#include "../../friends.h"
 #include "driver.h"
 #include <vector> 
 #include <iostream>
@@ -10,7 +10,7 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::client; 
 
-std::vector <friends> flist;
+std::vector <Friends> flist;
 
 void callme(std::string param, std::string value){
   http_client client(U("https://graph.facebook.com/v2.10"));
@@ -34,7 +34,7 @@ void callme(std::string param, std::string value){
 			json::object dataurl = picture.at(U("data")).as_object();
 			std::string url = dataurl.at(U("url")).as_string();
 			std::string id = data[i].at(U("id")).as_string();
-			friends flisttemp(name, url,id);
+			Friends flisttemp(name, url,id);
 			flist.push_back(flisttemp);
 
 			
@@ -56,7 +56,7 @@ void callme(std::string param, std::string value){
 
 
 
-std::vector<friends> callFacebook(){
+std::vector<Friends> callFacebook(){
 	uri_builder login("https://www.facebook.com/v2.10/dialog/oauth");
 	login.append_query("client_id", 125649754768050);
 	login.append_query("response_type", "token");

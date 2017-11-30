@@ -5,6 +5,6 @@
 
 #include <vector>
 
-std::vector<friends> callFacebook();
+std::vector<Friends> callFacebook();
 
 #endif

@@ -1,6 +1,7 @@
 
 #include "friends.h"
-#include "src/api/oauth2.h"
+#include "src/api/driver.h"
+//#include "src/api/oauth2.h"
 #include <cpprest/http_client.h>
 #include <cpprest/uri.h>  
 #include <vector> 
@@ -13,14 +14,14 @@ using namespace web;
 using namespace web::http;
 using namespace web::http::client; 
 
-std::vector <Friends> flist;
+//std::vector <Friends> flist;
 
 Friends::Friends(): Friends("","",""){}
 
 Friends::Friends(std::string name, std::string picurl, std::string id) : name_(name), picurl_(picurl), id_(id){}
 
 
-void callme(std::string param, std::string value){
+/*void callme(std::string param, std::string value){
   http_client client(U("https://graph.facebook.com/v2.10"));
   uri_builder builder(U("/me?fields=name,friends%7Bpicture.width(159).height(127),name,id%7D"));
 	builder.append_query(U("access_token"), value);
@@ -66,7 +67,7 @@ std::vector<Friends> callFacebook(){
 	//	  << flist.front().names() << " " << flist.front().picurls() << std::endl;
 	return flist;
 }
-
+*/
 std::vector <Friends> friends = callFacebook();
 
 void Friends::setId(std::string id){
