@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <vector>
-#include "../src/api/dataex.h"
+#include "../friends.h"
 #include "../src/api/driver.h"
 
 
@@ -17,7 +17,7 @@ std::string url;
 std::string currscore;
 int score = 0;
 int pick;
-std::vector<friends> info;
+std::vector<Friends> info;
 
 //funcs
 
@@ -135,7 +135,7 @@ int total = info.size();
 srand(time(NULL));
 pick = rand() % total;
 cout<<"pick: "<<pick<<"\ttotal: "<<total<<endl;
-url = info[pick].picurls();
+url = info[pick].getPicUrls();
 return url;
 
 }
@@ -184,7 +184,7 @@ info = callFacebook();
 	
 	for(int i = 0; i< info.size(); i++)
 	{
-		std::cout << i << ": " << info[i].names() << std::endl << "     Url: " << info[i].picurls() << std::endl << 				"      Id: "<< info[i].ids() << std::endl;
+		std::cout << i << ": " << info[i].getNames() << std::endl << "     Url: " << info[i].getPicUrls() << std::endl << 				"      Id: "<< info[i].getId() << std::endl;
 	}
 	
 //run the fb login driver
@@ -210,7 +210,7 @@ Gtk::Main::quit();
 void on_button_clicked3(){//guess
 curr_win_poss();
 pWindow2->hide();
-if(pTextbox3->get_text() == info[pick].names()){ //names of random picked per
+if(pTextbox3->get_text() == info[pick].getNames()){ //names of random picked per
 //database has a check function
 score++;
 std::cout << score <<"\n"<<std::flush;
