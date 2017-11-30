@@ -13,24 +13,19 @@ You will need to make sure that the compiler has access to the libraries when yo
 If for some reason there is an emoji present in your facebook data the JSON would not be able to extract it and return an error.
 
 # Incorporating the program
-Add the following files into your folder
-
-	oauth2.cpp
-	oauth2.h
-	dataex.h
-	dataex.cpp
-	driver.cpp
-	driver.h
-
-After adding these to your folder make sure that you include the following into your main cpp
+Include the following into your main cpp
 
 	#include <vector>
-	#include "dataex.h"
+	#include "friends.h"
 	#include "driver.h"
 
-If you would like to see an example of this then take a look at main.cpp above.
+If you would like to see an example of this, then take a look at main.cpp above.
 
-Make sure you compile the program using the same standard as used above.
+Make sure you compile the program using the following:
+
+	g++ src/api/oauth2.cpp src/api/driver.cpp friends.cpp -o driver -std=c++11 -lboost_system -lcrypto -lssl -lcpprest -lsqlite3 `pkg-config gtkmm-3.0 webkit2gtk-4.0 --cflags --libs`
+
+Plus any other files that you may need to add.
 
 ## Calling the function
 Simply call the function callFacebook(); to run the program. This function will return a vector that has the information from facebook. A way to take advantage of this would be:
@@ -43,13 +38,13 @@ Simply call the function callFacebook(); to run the program. This function will 
 ## Accessing Data
 The data is stored in a vector of classes. In this class you can access the following:
 
-	names(): will return the first and last name of the friend
-	picurls():will return the url of the friends picture
-	ids():will return the facebokk id of the friend
+	getNames(): will return the first and last name of the friend
+	getPicUrls():will return the url of the friends picture
+	getId():will return the facebokk id of the friend
 
 So if the vector is called "info" then to get the name of a freind you would try something like the following
 
-	info[i].names();
-	info[i].picurls();
-	info[i].ids();
+	info[i].getNames();
+	info[i].getPicUrls();
+	info[i].getId();
 
