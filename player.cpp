@@ -1,5 +1,12 @@
 #include "player.h"
 
+/*
+* The player class connects to the scores.db
+* database and creates a table named Player if it
+* does not already exist, stores the names and score of
+* the user and retrieves the name and score of the player
+* with the highest score from the database.
+*/
 
 int callback(void *data, int argc, char **argv, char **azColName){
    
