@@ -198,7 +198,7 @@ size_t Player::getHighScore()const{
     return high_score_;
 }
 
-int main(){
+int mainX(){
 	Player p;
 	std::string hsname;
 	int hs = 0;
