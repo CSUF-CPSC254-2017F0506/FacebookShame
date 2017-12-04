@@ -1,11 +1,14 @@
 //headers
 #include <gtkmm.h>
 #include <iostream>
+#include <stdlib.h>
 #include <string>
+#include <algorithm>
 #include <cstdlib>
 #include <vector>
 #include "../friends.h"
 #include "../src/api/driver.h"
+#include "../player.h"
 
 
 using namespace std;
@@ -15,9 +18,12 @@ std::string Fname;
 std::string Lname;
 std::string url;
 std::string currscore;
+std::string Highscore;
 int score = 0;
 int pick;
 std::vector<Friends> info;
+std::vector<int> selected;
+Player p;
 
 //funcs
 
@@ -27,6 +33,7 @@ void curr_win_poss();//keeps window location
 string get_screen_name();//for database
 string get_ran_per();//from api
 int get_score();
+bool compareNames();
 
 void on_button_clicked();//login
 void on_button_clicked2();//quit
@@ -119,8 +126,8 @@ kit.run();
   //return app->run(*pOffwin);
 
 }
-void convert(){
-pTextbox3->set_text("Firstname\tLastname");
+void convert(){//downloads image
+pTextbox3->set_text("Firstname         Lastname");
 string str = "wget -O temp.jpg -U Mozilla '";
 str += get_ran_per();
 str += "' --header Cookie: 'allow-download=1'";
@@ -130,12 +137,34 @@ pImage ->set("temp.jpg");
 }
 
 string get_ran_per(){//this func will pick a random person from vector
-
+bool check2;
 int total = info.size();
 srand(time(NULL));
 pick = rand() % total;
 cout<<"pick: "<<pick<<"\ttotal: "<<total<<endl;
 url = info[pick].getPicUrls();
+if(selected.size() ==0){
+selected.push_back(pick);
+}
+else {
+do{
+	check2 = false;
+	for(int i = 0;i<selected.size();i++){
+		if(pick == selected[i]){
+			check2 = true;
+		}
+	}
+	
+	if(check2 == true){
+	total = info.size();
+	pick = rand() % total;
+	cout<<"pick: "<<pick<<"\ttotal: "<<total<<endl;
+	url = info[pick].getPicUrls();
+	}
+}while(check2 == true);
+selected.push_back(pick);
+}
+
 return url;
 
 }
@@ -175,6 +204,24 @@ pWindow4->move(x,y);
 int get_score(){
 return score;
 }
+bool compareNames(){
+    string guess = pTextbox3->get_text();
+    string random = info[pick].getNames();
+   
+    std::transform(random.begin(), random.end(), random.begin(), ::toupper);
+    std::transform(guess.begin(),guess.end(), guess.begin(), ::toupper);
+    cout<<guess<<random<<endl;
+    if(guess == random){
+        std::cout << "Yep. Thats right." << std::endl;
+        return true;
+    }
+    else{
+        std::cout << "Nope. Thats not right." <<std::endl;
+        return false;
+    }
+    
+}
+
 
 void on_button_clicked(){//login
 curr_win_poss(); 
@@ -210,25 +257,48 @@ Gtk::Main::quit();
 void on_button_clicked3(){//guess
 curr_win_poss();
 pWindow2->hide();
-if(pTextbox3->get_text() == info[pick].getNames()){ //names of random picked per
+if(compareNames() == true){ //right
 //database has a check function
 score++;
 std::cout << score <<"\n"<<std::flush;
 pWindow4->show(); 
 }
-else{
+else{//wrong
 currscore = pLabel->get_text(); 
 currscore += std::to_string(score);
 pLabel->set_text(currscore);
 cout <<currscore <<endl;
+
+	p.createPlayerInfo();
+	p.setName(get_screen_name());
+	p.setScore(score);
+	p.insertInfo();
+
+p.retrieveInfo();
+
+Highscore = pLabel2->get_text();
+Highscore += p.getHSName();
+Highscore += std::to_string(p.getHighScore());
+pLabel2->set_text(Highscore);
+
+string hsname = p.getHSName();
+int hs = p.getHighScore();
+
+std::cout << "High score: " << hsname << " "<< hs <<std::endl;
+
 pWindow3->show(); 
+cout<<Highscore<<endl;
 }
 }
 
 void on_button_clicked4(){//cont
 curr_win_poss();
 pWindow4->hide();
+if(info.size() == selected.size()){
+selected.clear();
+}
 convert();
 pWindow2->show();
+
 }
 
