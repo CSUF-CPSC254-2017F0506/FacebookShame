@@ -21,15 +21,18 @@ std::string currscore;
 std::string Highscore;
 int score = 0;
 int pick;
+int total;
+bool check2;
 std::vector<Friends> info;
 std::vector<int> selected;
 Player p;
 
 //funcs
-
+void RepeatCheck();
 void set_high_score();//from database
 void convert();//allow picture to show
 void curr_win_poss();//keeps window location
+
 string get_screen_name();//for database
 string get_ran_per();//from api
 int get_score();
@@ -39,6 +42,7 @@ void on_button_clicked();//login
 void on_button_clicked2();//quit
 void on_button_clicked3();//submit guess
 void on_button_clicked4();//on continue
+void on_button_clicked5();//retry
 
 
 //login 
@@ -50,7 +54,6 @@ Gtk::Button* pButton2 = nullptr;
 //gamescreen
 Gtk::Window* pWindow2 = nullptr;
 Gtk::Entry* pTextbox3 = nullptr;
-
 Gtk::Button* pButton3 = nullptr;
 Gtk::Image* pImage = nullptr;
 //fail
@@ -78,7 +81,7 @@ int main(int argc, char *argv[])
   builder->get_widget("hello_window", pWindow);
   pWindow->set_size_request(625,475);
   pWindow->set_resizable(false);
-
+  
  
   builder->get_widget("entry1", pTextbox);
   pTextbox->set_text("screen_name");
@@ -92,40 +95,43 @@ int main(int argc, char *argv[])
 //game screen
   builder->get_widget("gamescreen", pWindow2);
   pWindow2->set_size_request(625,475);
+  pWindow2->set_resizable(false);
 
   builder->get_widget("image2",pImage);
+
+  builder->get_widget("FnameTB", pTextbox3);
   
-  
-builder->get_widget("FnameTB", pTextbox3);
-
-
-
-builder->get_widget("guess", pButton3);  
+  builder->get_widget("guess", pButton3);  
   pButton3->signal_clicked().connect( sigc::ptr_fun(on_button_clicked3) );
 //fail screen
   builder->get_widget("Fail_screen", pWindow3);
   pWindow3->set_size_request(625,475);
+  pWindow3->set_resizable(false);
+
   builder->get_widget("Score", pLabel);
   builder->get_widget("Hscore", pLabel2);
+
   builder->get_widget("cont", pButton4);  
-  pButton4->signal_clicked().connect( sigc::ptr_fun(on_button_clicked2) );
+  pButton4->signal_clicked().connect( sigc::ptr_fun(on_button_clicked5) );
 
   builder->get_widget("quit", pButton5);  
   pButton5->signal_clicked().connect( sigc::ptr_fun(on_button_clicked2) );
 
 //cont
- builder->get_widget("cont_screen", pWindow4);
+  builder->get_widget("cont_screen", pWindow4);
   pWindow4->set_size_request(625,475);
+  pWindow4->set_resizable(false);
+
   builder->get_widget("Cont_button",pButton6);
   pButton6->signal_clicked().connect( sigc::ptr_fun(on_button_clicked4) );
 
 //start
-
 pWindow->show();	
 kit.run();
-  //return app->run(*pOffwin);
+//return app->run(*pOffwin);
 
 }
+
 void convert(){//downloads image
 pTextbox3->set_text("Firstname         Lastname");
 string str = "wget -O temp.jpg -U Mozilla '";
@@ -137,8 +143,7 @@ pImage ->set("temp.jpg");
 }
 
 string get_ran_per(){//this func will pick a random person from vector
-bool check2;
-int total = info.size();
+total = info.size();
 srand(time(NULL));
 pick = rand() % total;
 cout<<"pick: "<<pick<<"\ttotal: "<<total<<endl;
@@ -147,6 +152,13 @@ if(selected.size() ==0){
 selected.push_back(pick);
 }
 else {
+RepeatCheck();
+selected.push_back(pick);
+}
+return url;
+}
+
+void RepeatCheck(){
 do{
 	check2 = false;
 	for(int i = 0;i<selected.size();i++){
@@ -162,11 +174,6 @@ do{
 	url = info[pick].getPicUrls();
 	}
 }while(check2 == true);
-selected.push_back(pick);
-}
-
-return url;
-
 }
 
 string get_screen_name(){
@@ -176,8 +183,23 @@ return tempname;
 }
 
 void set_high_score(){
-//call func 
-//set high score to stored high score 
+currscore = pLabel->get_text(); 
+currscore += std::to_string(score);
+pLabel->set_text(currscore);
+cout <<currscore <<endl;
+	p.createPlayerInfo();
+	p.setName(get_screen_name());
+	p.setScore(score);
+	p.insertInfo();
+p.retrieveInfo();
+Highscore = pLabel2->get_text();
+Highscore += p.getHSName();
+Highscore += "\t";
+Highscore += std::to_string(p.getHighScore());
+pLabel2->set_text(Highscore);
+string hsname = p.getHSName();
+int hs = p.getHighScore();
+std::cout << "High score: " << hsname << " "<< hs <<std::endl;
 }
 
 void curr_win_poss(){//save window position
@@ -201,10 +223,10 @@ pWindow3->move(x,y);
 pWindow4->move(x,y);
 }
 
-int get_score(){
+int get_score(){//outputs current score
 return score;
 }
-bool compareNames(){
+bool compareNames(){//compares stored name with name in textbox
     string guess = pTextbox3->get_text();
     string random = info[pick].getNames();
    
@@ -222,26 +244,19 @@ bool compareNames(){
     
 }
 
-
 void on_button_clicked(){//login
 curr_win_poss(); 
 pWindow->hide();
-info = callFacebook();
+info = callFacebook();//run the fb login driver
 	std::cout<<"I have called the function callFacebook() which returns a vector full of the information from facebook\n";
 	
 	for(int i = 0; i< info.size(); i++)
 	{
 		std::cout << i << ": " << info[i].getNames() << std::endl << "     Url: " << info[i].getPicUrls() << std::endl << 				"      Id: "<< info[i].getId() << std::endl;
-	}
-	
-//run the fb login driver
+	}	
 
 convert();
-
-
-
 pWindow2->show();
-
 cout<<get_screen_name()<<endl;
 }
 
@@ -264,28 +279,7 @@ std::cout << score <<"\n"<<std::flush;
 pWindow4->show(); 
 }
 else{//wrong
-currscore = pLabel->get_text(); 
-currscore += std::to_string(score);
-pLabel->set_text(currscore);
-cout <<currscore <<endl;
-
-	p.createPlayerInfo();
-	p.setName(get_screen_name());
-	p.setScore(score);
-	p.insertInfo();
-
-p.retrieveInfo();
-
-Highscore = pLabel2->get_text();
-Highscore += p.getHSName();
-Highscore += std::to_string(p.getHighScore());
-pLabel2->set_text(Highscore);
-
-string hsname = p.getHSName();
-int hs = p.getHighScore();
-
-std::cout << "High score: " << hsname << " "<< hs <<std::endl;
-
+set_high_score();
 pWindow3->show(); 
 cout<<Highscore<<endl;
 }
@@ -296,9 +290,19 @@ curr_win_poss();
 pWindow4->hide();
 if(info.size() == selected.size()){
 selected.clear();
+cout<<"REPEAT"<<endl;
 }
 convert();
 pWindow2->show();
-
 }
 
+void on_button_clicked5(){
+curr_win_poss();
+score = 0;
+pLabel->set_text("Points: ");
+pLabel2->set_text("Highscore: ");
+selected.clear();
+pWindow3->hide(); 
+convert();
+pWindow2->show();
+}

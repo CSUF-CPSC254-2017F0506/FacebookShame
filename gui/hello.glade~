@@ -71,7 +71,7 @@
           </object>
           <packing>
             <property name="x">375</property>
-            <property name="y">284</property>
+            <property name="y">288</property>
           </packing>
         </child>
         <child>
@@ -181,7 +181,7 @@
             <property name="can_focus">True</property>
           </object>
           <packing>
-            <property name="x">297</property>
+            <property name="x">301</property>
             <property name="y">131</property>
           </packing>
         </child>
@@ -220,8 +220,8 @@
             <property name="pixbuf">border-256x256.png</property>
           </object>
           <packing>
-            <property name="x">12</property>
-            <property name="y">30</property>
+            <property name="x">9</property>
+            <property name="y">33</property>
           </packing>
         </child>
       </object>

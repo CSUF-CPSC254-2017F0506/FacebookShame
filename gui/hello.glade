@@ -71,7 +71,7 @@
           </object>
           <packing>
             <property name="x">375</property>
-            <property name="y">284</property>
+            <property name="y">288</property>
           </packing>
         </child>
         <child>
@@ -169,7 +169,7 @@
             <property name="label" translatable="yes">Your Friend's Name</property>
           </object>
           <packing>
-            <property name="x">342</property>
+            <property name="x">350</property>
             <property name="y">96</property>
           </packing>
         </child>
@@ -181,7 +181,7 @@
             <property name="can_focus">True</property>
           </object>
           <packing>
-            <property name="x">297</property>
+            <property name="x">301</property>
             <property name="y">131</property>
           </packing>
         </child>
@@ -220,7 +220,7 @@
             <property name="pixbuf">border-256x256.png</property>
           </object>
           <packing>
-            <property name="x">18</property>
+            <property name="x">9</property>
             <property name="y">33</property>
           </packing>
         </child>
