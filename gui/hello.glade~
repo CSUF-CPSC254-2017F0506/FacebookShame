@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="Fail_screen">
     <property name="can_focus">False</property>
+    <property name="type">popup</property>
     <child>
       <object class="GtkFixed" id="fixed2">
         <property name="visible">True</property>
@@ -92,6 +93,7 @@
   </object>
   <object class="GtkWindow" id="cont_screen">
     <property name="can_focus">False</property>
+    <property name="type">popup</property>
     <child>
       <object class="GtkFixed" id="fixed3">
         <property name="visible">True</property>
@@ -169,7 +171,7 @@
             <property name="label" translatable="yes">Your Friend's Name</property>
           </object>
           <packing>
-            <property name="x">342</property>
+            <property name="x">350</property>
             <property name="y">96</property>
           </packing>
         </child>
@@ -229,6 +231,8 @@
   </object>
   <object class="GtkWindow" id="hello_window">
     <property name="can_focus">False</property>
+    <property name="window_position">center</property>
+    <property name="decorated">False</property>
     <child>
       <object class="GtkLayout" id="layout1">
         <property name="visible">True</property>
